@@ -15,6 +15,7 @@ evaluate_word_analogies
 https://www.computersciencemaster.com.br/como-implementar-o-word2vec-em-python/#:~:text=Implementa%C3%A7%C3%A3o%20do%20word2vec%20em%20Python,processamento%20e%20cria%C3%A7%C3%A3o%20do%20modelo.&text=Podemos%20perceber%20que%20a%20palavra,causes%E2%80%9D%2C%20%E2%80%9Cenergy%E2%80%9D.
 
 https://www.youtube.com/watch?v=T9mZvI8adqI
+./ distance vectors.bin
 
 https://www.youtube.com/watch?v=Q2NtCcqmIww
 
@@ -30,3 +31,7 @@ https://stackoverflow.com/questions/32759712/how-to-find-the-closest-word-to-a-v
 
 loss
 https://www.youtube.com/watch?v=MtM9QrCjuK4
+
+https://www.kaggle.com/rootuser/worldnews-on-reddit
+
+
