@@ -13,6 +13,8 @@ STOP_WORDS = stopwords.words('english')
 PUNCTUATION = ['!', '"', '#', '$', '%', '&', '\/', '(', ')', '*', '+', ',', '-', '.',
                 '/', ':', ';', '<', '=', '>', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~']
 
+##logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
 def clean_text(v_text):
         # LOWER CASE
         v_text = [word.lower() for word in v_text]  
@@ -37,7 +39,7 @@ def train_all_models():
 
     dim_params = [100,300,500]
     wind_params = [2,4,6,8,10]
-    ep_params = [5, 10, 15]
+    ep_params = [5, 10, 15, 20]
 
     all_tests = {
         '100-2-5': [0,0,0],
@@ -86,7 +88,23 @@ def train_all_models():
         '500-4-15': [2,1,2],
         '500-6-15': [2,2,2],
         '500-8-15': [2,3,2],
-        '500-10-15': [2,4,2]
+        '500-10-15': [2,4,2],
+        #epochs
+        '100-2-20': [0,0,3],
+        '300-2-20': [1,0,3],
+        '500-2-20': [2,0,3],
+        '100-4-20': [0,1,3],
+        '100-6-20': [0,2,3],
+        '100-8-20': [0,3,3],
+        '100-10-20': [0,4,3],
+        '300-4-20': [1,1,3],
+        '300-6-20': [1,2,3],
+        '300-8-20': [1,3,3],
+        '300-10-20': [1,4,3],
+        '500-4-20': [2,1,3],
+        '500-6-20': [2,2,3],
+        '500-8-20': [2,3,3],
+        '500-10-20': [2,4,3]
     }
 
     for d in [0,1,2]:
@@ -109,7 +127,7 @@ def train_all_models():
                                 epochs = ep_params[value[2]],
                                 workers=cpu_count())
 
-            w2v_model.save("saved_models/{0}-cbow-{1}.model".format(dataset_name, key))
+            w2v_model.save("saved_models/models/{0}-cbow-{1}.model".format(dataset_name, key))
             del w2v_model
 
             count += 1
@@ -129,8 +147,6 @@ def train_all_models():
                                 epochs = ep_params[value[2]],
                                 workers=cpu_count())
 
-            w2v_model.save("saved_models/{0}-skip_gram-{1}.model".format(dataset_name, key))
+            w2v_model.save("saved_models/models/{0}-skip_gram-{1}.model".format(dataset_name, key))
             del w2v_model
             count += 1
-
-train_all_models()
