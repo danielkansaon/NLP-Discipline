@@ -47,24 +47,31 @@ def run():
             v_files_names.append(file)
             print(file)
     
+    trained_models = []
+    count = 1
+
     #WRITING FINAL FILE 
-    with open('saved_models/models_values.csv', 'w') as rfile:
-        count = 1
-        rfile.write('model,mean,std,var,num_words_miss\n')
+    if os.path.isfile('saved_models/models_values.csv'):
+        with open('saved_models/models_values.csv', 'r') as rfile:
+            lines = rfile.readlines()[1:]
+            for line in lines:
+                trained_models.append(line.split(',')[0])
+    else:    
+        with open('saved_models/models_values.csv', 'w') as rfile:
+            rfile.write('model,mean,std,var,num_words_miss\n')
 
     for file in v_files_names:
-        time = datetime.now().strftime("%H:%M:%S")
-        print(file, ' - {0}/{1} - {2}'.format(count, len(v_files_names), time))
+        if file not in trained_models:
+            time = datetime.now().strftime("%H:%M:%S")
+            print(file, ' - {0}/{1} - {2}'.format(count, len(v_files_names), time))
 
-        w2v_model = Word2Vec.load('saved_models/{0}'.format(file))
-        mean_error, std_error, std_var, w_not_vocab = get_error_question_words(w2v_model, words_to_evaluate, w2v_model.wv)
-        del w2v_model
+            w2v_model = Word2Vec.load('saved_models/{0}'.format(file))
+            mean_error, std_error, std_var, w_not_vocab = get_error_question_words(w2v_model, words_to_evaluate, w2v_model.wv)
+            del w2v_model
 
-        with open('saved_models/models_values.csv', 'a') as rfile:
-            rfile.write('{0},{1},{2},{3},{4}\n'.format(file, mean_error, std_error, std_var, w_not_vocab))
-        
-        print(mean_error, std_error, std_var, w_not_vocab, '\n')
-        count += 1
-        #exit()
-
+            with open('saved_models/models_values.csv', 'a') as rfile:
+                rfile.write('{0},{1},{2},{3},{4}\n'.format(file, mean_error, std_error, std_var, w_not_vocab))
+            
+            print(mean_error, std_error, std_var, w_not_vocab, '\n')
+            count += 1
 run()
