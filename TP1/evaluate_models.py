@@ -65,7 +65,7 @@ def run():
             time = datetime.now().strftime("%H:%M:%S")
             print(file, ' - {0}/{1} - {2}'.format(count, len(v_files_names), time))
 
-            w2v_model = Word2Vec.load('saved_models/{0}'.format(file))
+            w2v_model = Word2Vec.load('saved_models/models/{0}'.format(file))
             mean_error, std_error, std_var, w_not_vocab = get_error_question_words(w2v_model, words_to_evaluate, w2v_model.wv)
             del w2v_model
 
@@ -74,4 +74,3 @@ def run():
             
             print(mean_error, std_error, std_var, w_not_vocab, '\n')
             count += 1
-run()
