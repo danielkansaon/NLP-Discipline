@@ -45,7 +45,6 @@ def run():
     for file in os.listdir('saved_models/models'):
         if file.endswith('.model'):
             v_files_names.append(file)
-            print(file)
     
     trained_models = []
     count = 1

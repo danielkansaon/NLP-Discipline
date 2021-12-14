@@ -2,11 +2,9 @@
 from gensim.models import Word2Vec
 from nltk.corpus import stopwords
 import gensim.downloader as api
-from nltk.tokenize import word_tokenize
-import logging
 from multiprocessing import cpu_count
-import string
 from datetime import datetime
+import os
 
 # Declaração
 STOP_WORDS = stopwords.words('english')
@@ -29,10 +27,12 @@ def clean_text(v_text):
 
 def train_all_models():  
     dataset = api.load("text8")
-
+    print(dataset)
+    
     DATA_ALL = []
     for word in dataset:
-        DATA_ALL.append(clean_text(word))
+        DATA_ALL.append(word)
+        #DATA_ALL.append(clean_text(word))
 
     DATA_1 = DATA_ALL[:851]
     DATA_2 = DATA_ALL[851:]
@@ -107,6 +107,9 @@ def train_all_models():
         '500-10-20': [2,4,3]
     }
 
+    if os.path.exists('saved_models/models') == False:
+        os.mkdir('saved_models/models')
+
     for d in [0,1,2]:
         data_sentences = DATA_1 if d == 0 else DATA_2 if d == 1 else DATA_ALL
         dataset_name = 'data1' if d == 0 else 'data2' if d == 1 else 'all_data'
@@ -129,7 +132,6 @@ def train_all_models():
 
             w2v_model.save("saved_models/models/{0}-cbow-{1}.model".format(dataset_name, key))
             del w2v_model
-
             count += 1
 
         #SKIP-GRAM

@@ -15,7 +15,7 @@ Utilizar o algoritmo word2vec para criar modelos de linguagem. A ideia é testar
 - A base de dados **text8** foi utilizada para treinamento. http://mattmahoney.net/dc/text8.zip
 - Foi feita avaliação intrínseca de cada modelo gerado, através da distância entre as palavras;
 
-O notebook desenvolvido contém todos os códigos. 
+O notebook desenvolvido (fs1_word2vec_notebook) contém todos os códigos. 
 
 # Links utilizados para consulta
 
