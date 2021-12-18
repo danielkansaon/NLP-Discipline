@@ -32,17 +32,15 @@ def find_whatsaap_link(html_text):
 
     result = re.findall(r'(".+chat.whatsapp.com.+")', html_text)
     if len(result) > 0:
-        print(result[0])
         url_whatsapp = result[0].replace("\"","")
     else:
         result = re.findall(r'(".+api.whatsapp.com.+")', html_text)
         if len(result) > 0:
-            print(result[0])
             url_whatsapp = result[0].replace("\"","")
     
     return url_whatsapp
 
-def get_links(file_name, file_to_save, pstart):
+def collect_group_data(file_name, file_to_save, pstart):
     file_exist = os.path.exists(file_to_save)
 
     with open(file_name, 'r') as f:
@@ -53,7 +51,9 @@ def get_links(file_name, file_to_save, pstart):
         v_groups = []
 
         for i_group in range(0, len(groups)):
-            print("GROUP: ", i_group + 1)
+            print("PAGE: {0}/{1}".format(i_page + 1, len(lines)))
+            print("GROUP: {0}/{1}".format(i_group + 1, len(groups)))
+            print("URL: {0}\n".format(groups[i_group]['link']))
 
             headers = {'User-Agent': get_random_user_agent()}
             response = get(groups[i_group]['link'], headers = headers, verify=False, timeout=30)
@@ -78,21 +78,33 @@ def get_links(file_name, file_to_save, pstart):
             # exit()
 
             #Admin
-            adm_child = list(v_admin[0])
-            adm = adm_child[1].text if len(adm_child) == 2 else adm_child[0][1].text
+            if v_admin != []:
+                adm_child = list(v_admin[0])
+                adm = adm_child[1].text if len(adm_child) == 2 else adm_child[0][1].text
+            else:
+                adm = None
 
             #Date
-            date_child = list(v_date[0])
-            date = v_date[0].text if len(date_child) == 0 else date_child[0].text
+            if v_date != []:
+                date_child = list(v_date[0])
+                date = v_date[0].text if len(date_child) == 0 else date_child[0].text
+            else:
+                date = None
 
             #Regras
-            regras_child = list(v_regras[0])
-            regras = v_regras[0].text if len(regras_child) == 0 else regras_child[0].text
-
+            if v_regras != []:
+                regras_child = list(v_regras[0])
+                regras = v_regras[0].text if len(regras_child) == 0 else regras_child[0].text
+            else:
+                regras = None
+                
             # Description
-            desc_child = list(v_desc[0])
-            desc = v_desc[0].text if len(desc_child) == 0 else desc_child[0].text
-  
+            if v_desc != []:
+                desc_child = list(v_desc[0])
+                desc = v_desc[0].text if len(desc_child) == 0 else desc_child[0].text
+            else:
+                desc = None
+                
             v_groups.append({
                 "link": groups[i_group]['link'],
                 "whatsapp_link": whatsapp_url,
@@ -108,7 +120,7 @@ def get_links(file_name, file_to_save, pstart):
                 "group_img": groups[i_group]['group_img']
             })
             
-            time.sleep(1)
+            time.sleep(2)
             print("DONE!\n")
             
         with open(file_to_save, 'a+', encoding='utf-8') as f:
@@ -123,12 +135,13 @@ def get_links(file_name, file_to_save, pstart):
 
 if __name__ == "__main__":
     pstart = int(sys.argv[1:][0]) - 1 if len(sys.argv) > 1 else 0
-    get_links('all_zap_groups.json', 'final_zap_groups.json', pstart)
+    collect_group_data('all_zap_groups.json', 'final_zap_groups.json', pstart)
     print('END!')
 
 
 # f = open(r"html_example_group.html", "r")
 # page = f.read()
+# whatsapp_url = find_whatsaap_link(page)
 # parser_to_html = html.fromstring(page)
 # f.close()
 

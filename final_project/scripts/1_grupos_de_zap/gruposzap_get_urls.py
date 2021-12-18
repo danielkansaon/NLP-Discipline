@@ -27,7 +27,7 @@ def get_random_user_agent():
     return random.choice(user_agent_list)
 
 
-def get_links(baseurl, file_name, pstart, npages):
+def collect_links_main_page(baseurl, file_name, pstart, npages):
     file_exist = os.path.exists(file_name)
 
     for i_page in range(pstart, npages):
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     pstart = int(sys.argv[1:][0]) if len(sys.argv) > 1 else 1
 
     print(pstart)
-    get_links("https://gruposdezap.com/", "all_zap_groups.json", pstart, 2099)#2099
+    collect_links_main_page("https://gruposdezap.com/", "all_zap_groups.json", pstart, 2099)#2099
     print('END!')
 
 
