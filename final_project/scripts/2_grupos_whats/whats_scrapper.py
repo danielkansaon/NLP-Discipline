@@ -32,6 +32,7 @@ def collect_group_data(file_name, file_to_save, pstart):
     with open(file_name, 'r') as f:
         lines = json.load(f)
 
+    LINKS = set([])
     for i_page in range(pstart, len(lines)):
         groups = lines[i_page]['groups']
         v_groups = []
@@ -41,40 +42,48 @@ def collect_group_data(file_name, file_to_save, pstart):
             print("GROUP: {0}/{1}".format(i_group + 1, len(groups)))
             print("URL: {0}\n".format(groups[i_group]['link']))
 
-            headers = {'User-Agent': get_random_user_agent()}
-            response = get("https://gruposwhats.app/group/304848", headers = headers, verify=False, timeout=30)
+            if groups[i_group]['link'] not in LINKS:
+                LINKS.add(groups[i_group]['link'])
 
-            if response.status_code == 404:
-                return {"url": groups[i_group]['link'], "error": "page not found"}
+                headers = {'User-Agent': get_random_user_agent()}
+                response = get(groups[i_group]['link'], headers = headers, verify=False, timeout=30)
 
-            #Try to find whatsaap url
-            cleaned_response = response.text.replace('\x00', '')
-            parser_to_html = html.fromstring(cleaned_response)
-            print('- (1) html collected!')
-            
-            wpp_link = parser_to_html.xpath('//a[contains(text(),"Entrar no Grupo")]')
-            title = parser_to_html.xpath('//h5[@class="card-title"]')
-            desc = parser_to_html.xpath('//p[@class="card-text"]')
-            category = parser_to_html.xpath('//span[@class="card-category"]/text()')
-            group_img = parser_to_html.xpath('//img[@class="card-img-top lazy"]')
-            date = parser_to_html.xpath('//p[@class="last-check mb-0"]/strong')
+                if response.status_code == 404:
+                    return {"url": groups[i_group]['link'], "error": "page not found"}
 
-            print('- (2) vectors loaded!')
-            # exit()
-            
-            v_groups.append({
-                "link": groups[i_group]['link'],
-                "whatsapp_link": wpp_link[0].attrib['data-url'],
-                "title": title[0].text,
-                "category": category[0],
-                "description": desc[0].text,
-                "created_date": date[0].text,
-                "verified_date": date[1].text,
-                "group_img": group_img[0].attrib['data-src']
-            })
-            #break
-            time.sleep(0.8)
-            print("DONE!\n")
+                #Try to find whatsaap url
+                cleaned_response = response.text.replace('\x00', '')
+                parser_to_html = html.fromstring(cleaned_response)
+                print('- (1) html collected!')
+                
+                wpp_link = parser_to_html.xpath('//a[contains(text(),"Entrar no Grupo")]')
+                title = parser_to_html.xpath('//h5[@class="card-title"]')
+                desc = parser_to_html.xpath('//p[@class="card-text"]')
+                category = parser_to_html.xpath('//span[@class="card-category"]/text()')
+                group_img = parser_to_html.xpath('//img[@class="card-img-top lazy"]')
+                date = parser_to_html.xpath('//p[@class="last-check mb-0"]/strong')
+
+                print('- (2) vectors loaded!')
+                # exit()
+                
+                if len(wpp_link) > 20:
+                    continue
+
+                v_groups.append({
+                    "link": groups[i_group]['link'],
+                    "whatsapp_link": wpp_link[0].attrib['data-url'],
+                    "title": title[0].text,
+                    "category": category[0],
+                    "description": desc[0].text,
+                    "created_date": date[0].text,
+                    "verified_date": date[1].text,
+                    "group_img": group_img[0].attrib['data-src']
+                })
+                #break
+                time.sleep(0.8)
+                print("DONE!\n")
+            else:
+                print('- already collected!')
 
         with open(file_to_save, 'a+', encoding='utf-8') as f:
             if file_exist == True:
