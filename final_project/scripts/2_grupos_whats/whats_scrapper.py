@@ -76,11 +76,11 @@ def collect_group_data(file_name, file_to_save, pstart):
                     "category": category[0],
                     "description": desc[0].text,
                     "created_date": date[0].text,
-                    "verified_date": date[1].text,
+                    "verified_date":  date[1].text if len(date) > 1 else 'not found',
                     "group_img": group_img[0].attrib['data-src']
                 })
                 #break
-                time.sleep(0.8)
+                time.sleep(0.4)
                 print("DONE!\n")
             else:
                 print('- already collected!')

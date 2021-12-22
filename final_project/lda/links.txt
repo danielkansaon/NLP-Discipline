@@ -1,3 +1,6 @@
 https://www.youtube.com/watch?v=TKjjlp5_r7o
 
 https://www.youtube.com/watch?v=nNvPvvuPnGs
+
+Escolher número de tópicos
+https://www.machinelearningplus.com/nlp/topic-modeling-gensim-python/#17howtofindtheoptimalnumberoftopicsforlda
