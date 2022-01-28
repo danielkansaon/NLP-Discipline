@@ -61,23 +61,35 @@ def get_uniques_categories(file):
 def save_clean_data(file, name):
     data = json_load(file)
     clean_data = []
+    all_link = set()
+    all_desc = []
+    count = 0
 
     for d in data:
         categ = get_category_name(str(d['category']).lower())
         if categ not in excluded_categories:
             desc = str(d['description']).lower()
+            count += 1
 
             if len(desc) > 5:
-                clean_data.append({
-                    "title": str(d['title']).lower(),
-                    "description": desc,
-                    "category": categ
-                })
+                all_desc.append(desc)
+                l = str(d['whatsapp_link']).lower()
+                if l not in all_link:
+                    all_link.add(l)
+                    
+                    clean_data.append({
+                        "title": str(d['title']).lower(),
+                        "description": desc,
+                        "category": categ
+                    })
 
     with open(name, 'w') as f:
         json.dump(clean_data, f, ensure_ascii=False, indent=4)
 
-    print('total: ', len(clean_data))
+    print('\nDATASET: ', name)
+    print('total groups: ', count)
+    print('unique groups whatsaap: ', len(set(all_link)))
+    print('unique description: ', len(set(all_desc)))
 
 def count_categories(file):
     with open(file, 'r', encoding='utf-8') as w:
@@ -103,3 +115,13 @@ def count_categories(file):
 #cats1 = count_categories('./final_data/db_grupos_de_zap.json')
 #cats2 = count_categories('./final_data/db_grupos_whats.json')
 
+
+# DATASET:  ./final_data/db_grupos_de_zap.json
+# total groups:  49530
+# unique groups whatsaap:  28319
+# unique description:  29116
+
+# DATASET:  ./final_data/db_grupos_whats.json
+# total groups:  199248
+# unique groups whatsaap:  196583
+# unique description:  171263
