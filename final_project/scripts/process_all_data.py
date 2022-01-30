@@ -2,16 +2,20 @@
 import json
 from collections import Counter
 
-excluded_categories = {'fofocas', 'artesanatos', 'lista de transmissão', 'not found', 'tik tok', 
+excluded_categories = {'fofocas', 'artesanatos', 'lista de transmissão', 
+'not found', 'tik tok', 
 'youtubers', 'signos', 'nerds', 'imitação', 'trânsito',
 'imobiliária', 'compra e venda', 'viagem e turismo', 'investimentos e finanças', 
-'tecnologia', 'negócios & empreendedorismo', 'vídeos'}
+'tecnologia', 'negócios & empreendedorismo', 'vídeos',
+'amizade', 'outros', 'links de grupos', 'links', 'cidades'}
 
 
-categories =  {'memes, engraçados e zueira': 'memes, engraçados e zoeira',
+categories =  {'memes, engraçados e zoeira': 'memes engraçados e zoeira',
+ 'memes, engraçados e zueira': 'memes engraçados e zoeira',
  'figurinhas do whatsapp e stickers': 'figurinhas e stickers',
  'amor': 'amor e romance',
- 'saúde, moda e beleza': 'moda e beleza',
+ 'saúde, moda e beleza': 'saúde, emagrecimento e beleza',
+ 'moda e beleza': 'saúde, emagrecimento e beleza',
   'links': 'links de grupos',
   'frases e status': 'frases e mensagens',
   'espiritismo': 'religião',
@@ -21,8 +25,19 @@ categories =  {'memes, engraçados e zueira': 'memes, engraçados e zoeira',
   'free fire': 'games e jogos',
   'eventos': 'festas, baladas e eventos',
   'festas e baladas': 'festas, baladas e eventos',
+  #apos rede
+  'vagas de empregos': 'empregos e profissões',
+  'profissões': 'empregos e profissões',
   'academia': 'esportes e academia',
-  'esportes': 'esportes e academia'
+  'esportes': 'esportes e academia',
+  'namoro': 'amor e romance',
+  'concursos': 'educação e estudo',
+  'educação': 'educação e estudo',
+  'futebol': 'esportes e academia',
+  'tv': 'tv, desenhos e animes',
+  'desenhos e animes': 'tv, desenhos e animes',
+  'emagrecimento e perda de peso': 'saúde, emagrecimento e beleza'
+  #'memes, engraçados e zoeira': 'memes engraçados e zoeira'
   #'ganhar dinheiro': 'ganhar dinheiro|investimentos e finanças',
   #'investimentos e finanças': 'ganhar dinheiro|investimentos e finanças'
  }
@@ -108,13 +123,11 @@ def count_categories(file):
 #print(unique_categories)
 #print(len(unique_categories))
 
-
 #save_clean_data(file1, './final_data/db_grupos_de_zap.json')
 #save_clean_data(file2, './final_data/db_grupos_whats.json')
 
 #cats1 = count_categories('./final_data/db_grupos_de_zap.json')
 #cats2 = count_categories('./final_data/db_grupos_whats.json')
-
 
 # DATASET:  ./final_data/db_grupos_de_zap.json
 # total groups:  49530
