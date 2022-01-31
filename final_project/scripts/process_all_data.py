@@ -123,18 +123,19 @@ def count_categories(file):
 #print(unique_categories)
 #print(len(unique_categories))
 
-#save_clean_data(file1, './final_data/db_grupos_de_zap.json')
-#save_clean_data(file2, './final_data/db_grupos_whats.json')
+save_clean_data(file1, './final_data/db_grupos_de_zap.json')
+save_clean_data(file2, './final_data/db_grupos_whats.json')
 
 #cats1 = count_categories('./final_data/db_grupos_de_zap.json')
 #cats2 = count_categories('./final_data/db_grupos_whats.json')
 
-# DATASET:  ./final_data/db_grupos_de_zap.json
-# total groups:  49530
-# unique groups whatsaap:  28319
-# unique description:  29116
+## 21 Categorias
+#DATASET:  ./final_data/db_grupos_de_zap.json
+#total groups:  34488
+#unique groups whatsaap:  17857
+#unique description:  18325
 
-# DATASET:  ./final_data/db_grupos_whats.json
-# total groups:  199248
-# unique groups whatsaap:  196583
-# unique description:  171263
+#DATASET:  ./final_data/db_grupos_whats.json
+#total groups:  114024
+#unique groups whatsaap:  112645
+#unique description:  101929
