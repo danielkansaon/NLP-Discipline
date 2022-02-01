@@ -26,8 +26,8 @@ categories =  {'memes, engraçados e zoeira': 'memes engraçados e zoeira',
   'eventos': 'festas, baladas e eventos',
   'festas e baladas': 'festas, baladas e eventos',
   #apos rede
-  'vagas de empregos': 'empregos e profissões',
-  'profissões': 'empregos e profissões',
+  'vagas de empregos': 'ganhar dinheiro e empregos',
+  'profissões': 'ganhar dinheiro e empregos',
   'academia': 'esportes e academia',
   'esportes': 'esportes e academia',
   'namoro': 'amor e romance',
@@ -36,7 +36,9 @@ categories =  {'memes, engraçados e zoeira': 'memes engraçados e zoeira',
   'futebol': 'esportes e academia',
   'tv': 'tv, desenhos e animes',
   'desenhos e animes': 'tv, desenhos e animes',
-  'emagrecimento e perda de peso': 'saúde, emagrecimento e beleza'
+  'emagrecimento e perda de peso': 'saúde, emagrecimento e beleza',
+  'ganhar dinheiro': 'ganhar dinheiro e empregos',
+  
   #'memes, engraçados e zoeira': 'memes engraçados e zoeira'
   #'ganhar dinheiro': 'ganhar dinheiro|investimentos e finanças',
   #'investimentos e finanças': 'ganhar dinheiro|investimentos e finanças'
@@ -126,8 +128,8 @@ def count_categories(file):
 save_clean_data(file1, './final_data/db_grupos_de_zap.json')
 save_clean_data(file2, './final_data/db_grupos_whats.json')
 
-#cats1 = count_categories('./final_data/db_grupos_de_zap.json')
-#cats2 = count_categories('./final_data/db_grupos_whats.json')
+cats1 = count_categories('./final_data/db_grupos_de_zap.json')
+cats2 = count_categories('./final_data/db_grupos_whats.json')
 
 ## 21 Categorias
 #DATASET:  ./final_data/db_grupos_de_zap.json
