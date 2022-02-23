@@ -1,5 +1,6 @@
 # Second Assignment
 
+The final notebook has all the commands to run the project.
 
 https://www.kaggle.com/tanyadayanand/pos-tagging-using-rnn
 
