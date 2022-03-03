@@ -80,7 +80,7 @@ def collect_group_data(file_name, file_to_save, pstart):
                     "group_img": group_img[0].attrib['data-src']
                 })
                 #break
-                time.sleep(0.4)
+                time.sleep(1.5)
                 print("DONE!\n")
             else:
                 print('- already collected!')
@@ -99,6 +99,7 @@ def collect_group_data(file_name, file_to_save, pstart):
 
 if __name__ == "__main__":
     pstart = int(sys.argv[1:][0]) - 1 if len(sys.argv) > 1 else 0
+
     collect_group_data('all_whats_groups.json', 'final_whats_groups.json', pstart)
     print('END!')
 

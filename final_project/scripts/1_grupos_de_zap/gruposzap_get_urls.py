@@ -98,13 +98,17 @@ def collect_links_main_page(baseurl, file_name, pstart, npages):
                 "groups": v_groups
             }, f, ensure_ascii=False, indent=4)
         
-        time.sleep(4)
+        time.sleep(2)
 
 if __name__ == "__main__":
     pstart = int(sys.argv[1:][0]) if len(sys.argv) > 1 else 1
-
     print(pstart)
-    collect_links_main_page("https://gruposdezap.com/", "all_zap_groups.json", pstart, 2099)#2099
+    #1º coleta - até page 2099
+    #collect_links_main_page("https://gruposdezap.com/", "all_zap_groups.json", pstart, 2099)#2099
+
+    #2º coleta - até page 2121 - 2099 = 22
+    collect_links_main_page("https://gruposdezap.com/", "all_zap_groups.json", pstart, 22)#2099
+    
     print('END!')
 
 

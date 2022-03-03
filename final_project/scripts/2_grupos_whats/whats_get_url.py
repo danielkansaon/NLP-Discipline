@@ -34,20 +34,20 @@ def collect_links_main_page(baseurl, file_name, pstart, npages):
     for i_page in range(pstart, npages):
         print("PAGE: ", i_page)
         
-        # headers = {'User-Agent': get_random_user_agent()}
-        # url = baseurl + "?page=" + str(i_page)
-        # response = get(url, headers = headers, verify=False, timeout=30)
+        headers = {'User-Agent': get_random_user_agent()}
+        url = baseurl + "?page=" + str(i_page)
+        response = get(url, headers = headers, verify=False, timeout=30)
 
-        # if response.status_code == 404:
-        #     return {"url": url, "error": "page not found"}
+        if response.status_code == 404:
+            return {"url": url, "error": "page not found"}
 
-        # cleaned_response = response.text.replace('\x00', '')
-        # parser_to_html = html.fromstring(cleaned_response)
+        cleaned_response = response.text.replace('\x00', '')
+        parser_to_html = html.fromstring(cleaned_response)
 
-        f = open(r"html_example_group.html", "r")
-        page = f.read()
-        parser_to_html = html.fromstring(page)
-        f.close()
+        # f = open(r"html_example_group.html", "r")
+        # page = f.read()
+        # parser_to_html = html.fromstring(page)
+        # f.close()
 
         print('- (1) html collected!')
         v_links = parser_to_html.xpath('//a[contains(text(),"Entrar no Grupo")]')
@@ -90,8 +90,16 @@ if __name__ == "__main__":
     pstart = int(sys.argv[1:][0]) if len(sys.argv) > 1 else 1
 
     print(pstart)
-    collect_links_main_page("https://gruposwhats.app/", "all_whats_groups.json", pstart, 2)#8791
-    print('END!')
+   
+    #1º coleta - até page 8791
+    #collect_links_main_page("https://gruposwhats.app/", "all_whats_groups.json", pstart, 2)#8791
+
+    #2º coleta - 9675 - 8791 = 884
+    collect_links_main_page("https://gruposwhats.app/", "all_whats_groups.json", pstart, 884) # 9675
+    print('END!')   
+
+    
+    
 
 
 # f = open(r"html_example.html", "r")

@@ -46,82 +46,87 @@ def collect_group_data(file_name, file_to_save, pstart):
     with open(file_name, 'r') as f:
         lines = json.load(f)
 
+    LINKS = set([])
     for i_page in range(pstart, len(lines)):
         groups = lines[i_page]['groups']
         v_groups = []
 
         for i_group in range(0, len(groups)):
+                
             print("PAGE: {0}/{1}".format(i_page + 1, len(lines)))
             print("GROUP: {0}/{1}".format(i_group + 1, len(groups)))
             print("URL: {0}\n".format(groups[i_group]['link']))
 
-            headers = {'User-Agent': get_random_user_agent()}
-            response = get(groups[i_group]['link'], headers = headers, verify=False, timeout=30)
-
-            if response.status_code == 404:
-                return {"url": groups[i_group]['link'], "error": "page not found"}
-
-            #Try to find whatsaap url
-            whatsapp_url = find_whatsaap_link(response.text)
-            cleaned_response = response.text.replace('\x00', '')
-            parser_to_html = html.fromstring(cleaned_response)
-            print('- (1) html collected!')
-            
-            v_title = parser_to_html.xpath('//h1[@class="single-title"]/text()')
-            v_desc = parser_to_html.xpath('//p[contains(text(),"Descrição:")]/following-sibling::p')
-            v_admin = parser_to_html.xpath('//p[@class="admin"]')
-            v_regras = parser_to_html.xpath('//p[contains(text(),"Regras")]/following-sibling::p')
-            v_category = parser_to_html.xpath('//p[contains(text(),"Categoria:")]/following-sibling::p/a/text()')
-            v_date = parser_to_html.xpath('//p[contains(text(),"Adicionado em:")]/following-sibling::p')
-
-            print('- (2) vectors loaded!')
-            # exit()
-
-            #Admin
-            if v_admin != []:
-                adm_child = list(v_admin[0])
-                adm = adm_child[1].text if len(adm_child) == 2 else adm_child[0][1].text
-            else:
-                adm = None
-
-            #Date
-            if v_date != []:
-                date_child = list(v_date[0])
-                date = v_date[0].text if len(date_child) == 0 else date_child[0].text
-            else:
-                date = None
-
-            #Regras
-            if v_regras != []:
-                regras_child = list(v_regras[0])
-                regras = v_regras[0].text if len(regras_child) == 0 else regras_child[0].text
-            else:
-                regras = None
+            if groups[i_group]['link'] not in LINKS:
+                LINKS.add(groups[i_group]['link'])
                 
-            # Description
-            if v_desc != []:
-                desc_child = list(v_desc[0])
-                desc = v_desc[0].text if len(desc_child) == 0 else desc_child[0].text
-            else:
-                desc = None
+                headers = {'User-Agent': get_random_user_agent()}
+                response = get(groups[i_group]['link'], headers = headers, verify=False, timeout=30)
+
+                if response.status_code == 404:
+                    return {"url": groups[i_group]['link'], "error": "page not found"}
+
+                #Try to find whatsaap url
+                whatsapp_url = find_whatsaap_link(response.text)
+                cleaned_response = response.text.replace('\x00', '')
+                parser_to_html = html.fromstring(cleaned_response)
+                print('- (1) html collected!')
                 
-            v_groups.append({
-                "link": groups[i_group]['link'],
-                "whatsapp_link": whatsapp_url,
-                "title": "Not Found" if len(v_title) == 0 else v_title[0],
-                "admin": "Not Found" if adm == None or len(adm) == 0 else adm,
-                "category": "Not Found" if len(v_category) == 0 else v_category[0],
-                "category_url": groups[i_group]['category_url'],
-                "description": "Not Found" if desc == None or len(desc) == 0 else desc,
-                "rules": "Not Found" if regras == None or len(regras) == 0 else regras,
-                "created_date": "Not Found" if date == None or len(date) == 0 else date,
-                "num_visualization": groups[i_group]['num_visualization'],
-                "num_fav": groups[i_group]['num_fav'],
-                "group_img": groups[i_group]['group_img']
-            })
-            
-            time.sleep(2)
-            print("DONE!\n")
+                v_title = parser_to_html.xpath('//h1[@class="single-title"]/text()')
+                v_desc = parser_to_html.xpath('//p[contains(text(),"Descrição:")]/following-sibling::p')
+                v_admin = parser_to_html.xpath('//p[@class="admin"]')
+                v_regras = parser_to_html.xpath('//p[contains(text(),"Regras")]/following-sibling::p')
+                v_category = parser_to_html.xpath('//p[contains(text(),"Categoria:")]/following-sibling::p/a/text()')
+                v_date = parser_to_html.xpath('//p[contains(text(),"Adicionado em:")]/following-sibling::p')
+
+                print('- (2) vectors loaded!')
+                # exit()
+
+                #Admin
+                if v_admin != []:
+                    adm_child = list(v_admin[0])
+                    adm = adm_child[1].text if len(adm_child) == 2 else adm_child[0][1].text
+                else:
+                    adm = None
+
+                #Date
+                if v_date != []:
+                    date_child = list(v_date[0])
+                    date = v_date[0].text if len(date_child) == 0 else date_child[0].text
+                else:
+                    date = None
+
+                #Regras
+                if v_regras != []:
+                    regras_child = list(v_regras[0])
+                    regras = v_regras[0].text if len(regras_child) == 0 else regras_child[0].text
+                else:
+                    regras = None
+                    
+                # Description
+                if v_desc != []:
+                    desc_child = list(v_desc[0])
+                    desc = v_desc[0].text if len(desc_child) == 0 else desc_child[0].text
+                else:
+                    desc = None
+                    
+                v_groups.append({
+                    "link": groups[i_group]['link'],
+                    "whatsapp_link": whatsapp_url,
+                    "title": "Not Found" if len(v_title) == 0 else v_title[0],
+                    "admin": "Not Found" if adm == None or len(adm) == 0 else adm,
+                    "category": "Not Found" if len(v_category) == 0 else v_category[0],
+                    "category_url": groups[i_group]['category_url'],
+                    "description": "Not Found" if desc == None or len(desc) == 0 else desc,
+                    "rules": "Not Found" if regras == None or len(regras) == 0 else regras,
+                    "created_date": "Not Found" if date == None or len(date) == 0 else date,
+                    "num_visualization": groups[i_group]['num_visualization'],
+                    "num_fav": groups[i_group]['num_fav'],
+                    "group_img": groups[i_group]['group_img']
+                })
+                
+                time.sleep(1)
+                print("DONE!\n")
             
         with open(file_to_save, 'a+', encoding='utf-8') as f:
             if file_exist == True:
